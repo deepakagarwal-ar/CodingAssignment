@@ -1,0 +1,11 @@
+The CleanupApp is a small console application. When executed, it connects to a SQL database and deletes rows with a specific identifier from a set of tables.
+
+Tasks:
+
+1. Add a unit test for CleanupWorker to verify that the repository is called when the worker is executed. You can use any unit test framework you prefer.
+
+2. There is at least one bug in the application that needs to be found.
+
+3. Change the Repository.Cleanup method to be asynchronous.
+
+4. Introduce support for a database other than SQL Server. You do not have to implement a functional solution; you can use a made-up database type.
