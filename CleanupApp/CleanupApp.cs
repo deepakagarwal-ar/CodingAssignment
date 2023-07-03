@@ -14,20 +14,25 @@ namespace CleanupApp
             Console.WriteLine(connectionString);
             Console.WriteLine(identifier);
 
-            var repository = new Repository(connectionString);
+            // Creating the sql connection.
+            var sqlConnection = new SqlDBConnection(connectionString);
+
+            var repository = new Repository(sqlConnection);
 
             var worker = new CleanupWorker(repository);
 
             worker.Execute(identifier);
-
             Console.WriteLine("Cleanup completed");
 
+            // Creating the other oracle repository connection.
+            var oracleConnection = new OracleConnection(connectionString);
+
             // Other repositories clean up
-            var otherRepository = new OtherRepository(connectionString);
+            var otherRepository = new OtherRepository(oracleConnection);
+
             worker = new CleanupWorker(otherRepository);
 
             worker.Execute(identifier);
-
             Console.WriteLine("Other repository clean up completed.");
         }
     }

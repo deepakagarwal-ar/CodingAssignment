@@ -11,15 +11,19 @@ namespace CleanupApp
     /// </summary>
     internal class OtherRepository : IRepository
     {
-        private readonly string _otherConnectionString;
+        private readonly IConnectionFactory otherConnection;
 
-        public OtherRepository(string otherConnectionString)
+        public OtherRepository(IConnectionFactory connection)
         {
-            this._otherConnectionString = otherConnectionString;
+            this.otherConnection = connection;
         }
 
         public Task Cleanup(string identifier)
         {
+
+            //Connect to oracle using the connection factory.
+
+            // Cleaup up work.
 
             // Need to implement this method to clear the data
             // from other database using connection string.

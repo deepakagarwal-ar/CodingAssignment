@@ -25,7 +25,7 @@ namespace CleanupApp.Tests
 
             mockRepository.Setup(x => x.Cleanup(It.IsAny<string>()));
 
-            CleanupWorker worker = new CleanupWorker(mockRepository.Object);
+            CleanupWorker worker = new(mockRepository.Object);
 
             worker.Execute("TestIdentifiers");
 

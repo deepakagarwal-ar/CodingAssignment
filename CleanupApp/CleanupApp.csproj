@@ -45,10 +45,13 @@
   <ItemGroup>
     <Compile Include="CleanupApp.cs" />
     <Compile Include="CleanupWorker.cs" />
-    <Compile Include="IRepository.cs" />
+    <Compile Include="Connection\IConnection.cs" />
+    <Compile Include="Connection\IRepository.cs" />
     <Compile Include="OtherRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="Connection\OracleConnection.cs" />
+    <Compile Include="Connection\SqlConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

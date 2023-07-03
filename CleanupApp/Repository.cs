@@ -9,14 +9,14 @@ namespace CleanupApp
 {
     class Repository : IRepository
     {
-        private readonly string _sqlConnectionString;
+        private readonly IConnectionFactory sqlconnection;
 
-        public Repository(string sqlConnectionString)
+        public Repository(IConnectionFactory connection)
         {
-            _sqlConnectionString = sqlConnectionString;
+            this.sqlconnection = connection;
         }
 
-        public Task Cleanup(string identifier)
+        public async Task Cleanup(string identifier)
         {
             var statements = new List<string>
             {
@@ -27,25 +27,31 @@ namespace CleanupApp
                "DELETE FROM SomeTable5 WHERE Identifier = '" + identifier + "'"
             };
 
-            using (var sqlConnection = new SqlConnection(_sqlConnectionString))
+            using (var sqlConnection = new SqlConnection(this.sqlconnection.ConnectionString))
             {
                 sqlConnection.Open();
 
-                Parallel.ForEach(statements, async (statement) =>
+                // We can use the same command & connection to execute all the items in the list.
+                using (var command = new SqlCommand())
                 {
-                    using (var command = new SqlCommand())
+                    command.Connection = sqlConnection;
+
+                    Parallel.ForEach(statements, async (statement) =>
                     {
-                        command.Connection = sqlConnection;
                         command.CommandText = statement;
 
                         // To run the command in the databse execute non query should be executed
-                        // This is bug i hope in the project.
+                        // This is one bug hope in the project.
                         await command.ExecuteNonQueryAsync();
-                    }
-                });
+                    });
+                }
+
+                // Closing the connection might not required as we are wrapping it in using
+                // but for the safer side we can close it.
+                sqlConnection.Close();
             }
 
-            return Task.CompletedTask;
+            await Task.CompletedTask;
         }
     }
 }
